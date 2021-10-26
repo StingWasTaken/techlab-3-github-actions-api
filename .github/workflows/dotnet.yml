@@ -29,6 +29,13 @@ jobs:
         run: dotnet test --no-build --verbosity normal
       - name: Publish
         run: dotnet publish --configuration Release --output 'tech-lab-api-webapp'
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Create resource group
+        run: |
+          az group create -n "rg-techlab3" -l "West Europe"
       - name: 'Deploy to Azure WebApp'
         uses: azure/webapps-deploy@v2
         with:
